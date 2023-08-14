@@ -1,0 +1,15 @@
+{
+    "name": "qrcode/generator",
+    "autoload": {
+        "psr-4": {
+            "src\\" : "src/"
+        }
+    },
+    "authors": [{
+        "name" : "Leandro Ventura",
+        "email" : "leandroventur19@gmail.com"
+    }],
+    "require": {
+        "chillerlan/php-qrcode": "*"
+    }
+}
