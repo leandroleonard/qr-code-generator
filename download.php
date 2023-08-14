@@ -1,25 +1,31 @@
 <?php
-// Verifica se foi enviado um parâmetro 'imagem' via GET
-if(isset($_GET['imagem'])) {
-    // Caminho para a imagem gerada (pode ser ajustado conforme a sua estrutura de pastas)
-    $imagemPath = 'caminho/para/as/imagens/' . $_GET['imagem'];
+require_once 'vendor/autoload.php';
 
-    // Verifica se a imagem existe
-    if(file_exists($imagemPath)) {
-        // Define o cabeçalho para o download
+use src\Image;
+
+if(isset($_GET['image'])) {
+
+    $image = new Image($_GET['image']);
+
+    $image->save()  or die("Error: Something went wrong");
+    $imagePath =  $image->getFullPath();
+
+
+    if(file_exists($imagePath)) {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($imagemPath) . '"');
+        header('Content-Disposition: attachment; filename="' . basename($imagePath) . '"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
-        header('Content-Length: ' . filesize($imagemPath));
-        readfile($imagemPath);
+        header('Content-Length: ' . filesize($imagePath));
+        readfile($imagePath);
         exit;
     } else {
-        echo "A imagem não foi encontrada.";
+        echo "Image not found.";
     }
+    
 } else {
-    echo "Parâmetro 'imagem' não especificado.";
+    echo " Cannot identify the 'image'.";
 }
 ?>

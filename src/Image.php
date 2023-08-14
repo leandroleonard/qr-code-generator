@@ -8,13 +8,12 @@
         public string $default_name = 'leandroventura-qr-codegenerator';
         public string $default_format = '.png';
 
-        public function __construct(string $base64, string $url = null)
+        public function __construct(string $base64, string $url = '')
         {
             $this->path = __DIR__ . DIRECTORY_SEPARATOR . 'images/';
-            $this->name = ($this->sanitize_url($url) ?? $this->default_name) . $this->default_format;
+            $this->name = $this->sanitize_url($url);
             $this->base64Image = $this->sanitize_base64($base64);
         }
-
 
         public function save()
         {
@@ -31,11 +30,30 @@
             return str_replace('data:image/png;base64,', '', $base64);
         }
 
-        public function sanitize_url(string $url): string
+        public function sanitize_url(string $url)
         {
-            $url = str_replace('https://', '', $url);
-            $url = str_replace('http://', '', $url);
-            $url = str_replace('/', '0', $url);
-            return $url;
+            if($url != ''){
+                $url = str_replace('https://', '', $url);
+                $url = str_replace('http://', '', $url);
+                $url = str_replace('/', '0', $url);
+                return $url . $this->default_format;
+            }
+
+            return $this->default_name . $this->default_format;
+        }
+
+        public function getPath(): string
+        {
+            return $this->path;
+        }
+
+        public function getName(): string
+        {
+            return $this->name;
+        }
+
+        public function getFullPath(): string
+        {
+            return $this->path . $this->name;
         }
     }
